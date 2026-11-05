@@ -20,8 +20,27 @@ env:
   ASSET_PREFIX: dienstmotor-remote
 
 jobs:
+  # Un cliente compilado con la clave de tickets de ejemplo rechazaría todas las conexiones
+  # entrantes (src/dienstmotor_auth.rs), así que se bloquea antes de gastar la compilación.
+  preflight:
+    name: Dienstmotor auth preflight
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
+          sparse-checkout: src/branding.rs
+          sparse-checkout-cone-mode: false
+      - name: Ticket public key configured
+        run: |
+          if grep -q 'REPLACE_WITH_TICKET_PUBLIC_KEY' src/branding.rs; then
+            echo "::error file=src/branding.rs::DM_TICKET_PUBKEYS todavía tiene la clave de ejemplo"
+            exit 1
+          fi
+
   build:
     name: Build RustDesk
+    needs: preflight
     if: ${{ inputs.build }}
     uses: ./.github/workflows/flutter-build.yml
     with:
@@ -35,8 +54,8 @@ jobs:
   # sin tocar el workflow de upstream para no complicar los merges.
   publish:
     name: Publish Dienstmotor Remote release
-    needs: build
-    if: ${{ !cancelled() && inputs.publish && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
+    needs: [preflight, build]
+    if: ${{ !cancelled() && inputs.publish && needs.preflight.result == 'success' && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}

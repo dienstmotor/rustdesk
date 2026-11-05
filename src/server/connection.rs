@@ -2907,6 +2907,11 @@ impl Connection {
         }
         // After handling CloseReason messages, proceed to process other message types
         if let Some(message::Union::LoginRequest(lr)) = msg.union {
+            if let Err(err) = crate::dienstmotor_auth::verify_login_ticket(&lr.dm_ticket, self.inner.id()) {
+                self.send_login_error(err).await;
+                sleep(1.).await;
+                return false;
+            }
             if !self.check_login_scope(&lr).await {
                 return false;
             }
@@ -3163,6 +3168,10 @@ impl Connection {
                                     "Rejected switch sides response for non-remote-desktop session; closing connection"
                                 );
                                 self.send_login_error("Connection not allowed").await;
+                                return false;
+                            }
+                            if let Err(err) = crate::dienstmotor_auth::verify_login_ticket(&lr.dm_ticket, self.inner.id()) {
+                                self.send_login_error(err).await;
                                 return false;
                             }
                             self.reset_session_scope_for_login();

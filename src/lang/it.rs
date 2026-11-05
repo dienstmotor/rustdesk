@@ -815,5 +815,15 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Off", "OFF"),
         ("api_server_connection_tip", "Il server personalizzato usa 'HTTP non crittografato'. Per abilitare HTTPS contatta l'amministratore."),
         ("api_server_empty_tip", "Con 'Server API' vuoto, il server personalizzato predefinito è 'HTTP'. Per abilitare HTTPS contatta l'amministratore."),
+        ("Sign in with Dienstmotor", ""),
+        ("Sign out", ""),
+        ("Sign-in required to control another device", ""),
+        ("Signed in as", ""),
+        ("Waiting for sign-in in the browser", ""),
+        ("Dienstmotor: sign in to start a connection", ""),
+        ("Dienstmotor: your session expired, sign in again", ""),
+        ("Dienstmotor: authorization service unavailable, try again later", ""),
+        ("Dienstmotor: only connections by device ID through the Dienstmotor server are allowed", ""),
+        ("Dienstmotor: this device only accepts connections from signed-in Dienstmotor operators", ""),
     ].iter().cloned().collect();
 }

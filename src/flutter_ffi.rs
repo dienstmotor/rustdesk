@@ -2544,6 +2544,23 @@ pub fn is_custom_client() -> SyncReturn<bool> {
     SyncReturn(crate::common::is_custom_client())
 }
 
+pub fn main_dm_auth_status() -> SyncReturn<String> {
+    SyncReturn(crate::dienstmotor_auth::status())
+}
+
+/// Starts the Dienstmotor sign-in; returns `{"url": ...}` to open in the browser or `{"error": ...}`.
+pub fn main_dm_auth_login() -> String {
+    match crate::dienstmotor_auth::start_login() {
+        Ok(url) => serde_json::json!({ "url": url }).to_string(),
+        Err(err) => serde_json::json!({ "error": err }).to_string(),
+    }
+}
+
+pub fn main_dm_auth_logout() -> SyncReturn<()> {
+    crate::dienstmotor_auth::logout();
+    SyncReturn(())
+}
+
 pub fn is_disable_settings() -> SyncReturn<bool> {
     SyncReturn(config::is_disable_settings())
 }

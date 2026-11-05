@@ -386,6 +386,7 @@ impl Client {
         (i32, String),
     )> {
         debug_assert!(peer == interface.get_id());
+        let token = &crate::dienstmotor_auth::connection_ticket(peer, conn_type, &interface).await?;
         interface.update_direct(None);
         interface.update_received(false);
         match Self::_start(peer, key, token, conn_type, interface.clone()).await {
@@ -857,7 +858,8 @@ impl Client {
         };
 
         let switch_code = interface.get_switch_code();
-        let legacy_secure = !key.is_empty() && (!token.is_empty() || !switch_code.is_empty());
+        let legacy_secure = !key.is_empty()
+            && (crate::dienstmotor_auth::wants_secure_tcp(&token) || !switch_code.is_empty());
         let carries_offer = webrtc_offerer.as_ref().and_then(|g| g.stream()).is_some();
         // Counted from before the key exchange, so the exchange spends the UDP NAT test's own
         // wait rather than replacing it: the test runs beside both.
@@ -1805,7 +1807,9 @@ impl Client {
                 .await
                 .with_context(|| "Failed to connect to rendezvous server")?;
 
-            if !key.is_empty() && (!token.is_empty() || !switch_code.is_empty()) {
+            if !key.is_empty()
+                && (crate::dienstmotor_auth::wants_secure_tcp(token) || !switch_code.is_empty())
+            {
                 secure_tcp(&mut socket, key).await?;
             }
 
@@ -2881,6 +2885,7 @@ pub struct LoginConfigHandler {
     pub enable_trusted_devices: bool,
     pub record_state: bool,
     pub record_permission: bool,
+    pub dm_ticket: String,
 }
 
 impl Deref for LoginConfigHandler {
@@ -3858,6 +3863,7 @@ impl LoginConfigHandler {
             os_login,
             hwid,
             avatar,
+            dm_ticket: self.dm_ticket.clone(),
             ..Default::default()
         };
         match self.conn_type {

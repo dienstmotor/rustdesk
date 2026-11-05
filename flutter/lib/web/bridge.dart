@@ -1711,6 +1711,17 @@ class RustdeskImpl {
     return mainGetAppNameSync(hint: hint) != "RustDesk";
   }
 
+  // Dienstmotor sign-in is not available on the Web target; hbbs refuses its connections.
+  String mainDmAuthStatus({dynamic hint}) {
+    return '{"state":"unauthenticated","username":"","name":"","error":""}';
+  }
+
+  Future<String> mainDmAuthLogin({dynamic hint}) {
+    return Future.value('{"error":"Not supported on Web"}');
+  }
+
+  void mainDmAuthLogout({dynamic hint}) {}
+
   bool isDisableSettings({dynamic hint}) {
     // Checks HARD_SETTINGS["disable-settings"] == "Y"
     return mainGetHardOption(key: "disable-settings", hint: hint) == "Y";

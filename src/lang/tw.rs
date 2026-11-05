@@ -815,5 +815,15 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Off", ""),
         ("api_server_connection_tip", "自訂伺服器正在使用未加密的 HTTP。請聯絡管理員啟用 HTTPS。"),
         ("api_server_empty_tip", "API 伺服器留空時，自訂伺服器預設使用 HTTP。請聯絡管理員啟用 HTTPS。"),
+        ("Sign in with Dienstmotor", ""),
+        ("Sign out", ""),
+        ("Sign-in required to control another device", ""),
+        ("Signed in as", ""),
+        ("Waiting for sign-in in the browser", ""),
+        ("Dienstmotor: sign in to start a connection", ""),
+        ("Dienstmotor: your session expired, sign in again", ""),
+        ("Dienstmotor: authorization service unavailable, try again later", ""),
+        ("Dienstmotor: only connections by device ID through the Dienstmotor server are allowed", ""),
+        ("Dienstmotor: this device only accepts connections from signed-in Dienstmotor operators", ""),
     ].iter().cloned().collect();
 }

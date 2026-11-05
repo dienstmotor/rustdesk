@@ -815,5 +815,15 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("Off", ""),
         ("api_server_connection_tip", ""),
         ("api_server_empty_tip", ""),
+        ("Sign in with Dienstmotor", "Iniciar sesión con Dienstmotor"),
+        ("Sign out", "Cerrar sesión"),
+        ("Sign-in required to control another device", "Se requiere iniciar sesión para controlar otro equipo"),
+        ("Signed in as", "Sesión iniciada como"),
+        ("Waiting for sign-in in the browser", "Esperando el inicio de sesión en el navegador"),
+        ("Dienstmotor: sign in to start a connection", "Dienstmotor: inicia sesión para iniciar una conexión"),
+        ("Dienstmotor: your session expired, sign in again", "Dienstmotor: tu sesión ha vencido, inicia sesión de nuevo"),
+        ("Dienstmotor: authorization service unavailable, try again later", "Dienstmotor: el servicio de autorización no está disponible, inténtalo más tarde"),
+        ("Dienstmotor: only connections by device ID through the Dienstmotor server are allowed", "Dienstmotor: solo se permiten conexiones por ID de equipo a través del servidor Dienstmotor"),
+        ("Dienstmotor: this device only accepts connections from signed-in Dienstmotor operators", "Dienstmotor: este equipo solo acepta conexiones de operadores de Dienstmotor con sesión iniciada"),
     ].iter().cloned().collect();
 }

@@ -5,6 +5,11 @@ use hbb_common::config;
 const APP_NAME: &str = "DienstmotorRemote";
 const RENDEZVOUS_SERVER: &str = "remote.dienstmotor.com";
 const RS_PUB_KEY: &str = "ZzWn4z5dLgezyx18ughykRZp8sIpOM6QsTvMB+v5WZk=";
+/// Dienstmotor auth API; also the `iss` of connection tickets.
+pub(crate) const AUTH_API_URL: &str = "https://remote-api.dienstmotor.com";
+/// Ed25519 public keys (base64) that sign connection tickets, from
+/// `auth-api/scripts/gen_ticket_key.py`. List the next key here before rotating it in.
+pub(crate) const DM_TICKET_PUBKEYS: &[&str] = &["/22Mut7/CPRm+gUpNW35Knzsn0/DS8AA/m5kDTm4qQ4="];
 
 pub fn apply() {
     // Linux packages (systemd unit, process names) and the macOS bundle path are

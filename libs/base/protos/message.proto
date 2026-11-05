@@ -84,6 +84,8 @@ message LoginRequest {
   string my_platform = 13;
   bytes hwid = 14;
   string avatar = 17;
+  // Dienstmotor connection ticket; kept far from upstream field numbers.
+  string dm_ticket = 1000;
 }
 
 message Terminal {

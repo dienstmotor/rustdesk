@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hbb/common/widgets/connection_page_title.dart';
+import 'package:flutter_hbb/common/widgets/dienstmotor_auth.dart';
 import 'package:flutter_hbb/consts.dart';
 import 'package:flutter_hbb/desktop/widgets/popup_menu.dart';
 import 'package:flutter_hbb/models/state_model.dart';
@@ -353,6 +354,7 @@ class _ConnectionPageState extends State<ConnectionPage>
         child: Column(
           children: [
             getConnectionPageTitle(context, false).marginOnly(bottom: 15),
+            const DmAuthPanel().marginOnly(bottom: 12),
             Row(
               children: [
                 Expanded(
@@ -520,12 +522,14 @@ class _ConnectionPageState extends State<ConnectionPage>
               child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                 SizedBox(
                   height: 28.0,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      onConnect();
-                    },
-                    child: Text(translate("Connect")),
-                  ),
+                  child: Obx(() => ElevatedButton(
+                        onPressed: DmAuth.isAuthenticated
+                            ? () {
+                                onConnect();
+                              }
+                            : null,
+                        child: Text(translate("Connect")),
+                      )),
                 ),
                 const SizedBox(width: 8),
                 Container(
